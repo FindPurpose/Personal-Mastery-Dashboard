@@ -1,0 +1,176 @@
+/* Main Styles */
+:root {
+  --primary-color: #3b82f6;
+  --study-color: #6366f1;
+  --mindset-color: #a855f7;
+  --fitness-color: #22c55e;
+  --creative-color: #ec4899;
+}
+
+/* Dark mode variables */
+.dark {
+  --bg-primary: #111827;
+  --bg-secondary: #1f2937;
+  --bg-tertiary: #374151;
+  --text-primary: #f9fafb;
+  --text-secondary: #e5e7eb;
+  --text-tertiary: #9ca3af;
+}
+
+/* Light mode variables */
+:root {
+  --bg-primary: #f9fafb;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f3f4f6;
+  --text-primary: #111827;
+  --text-secondary: #374151;
+  --text-tertiary: #6b7280;
+}
+
+/* Transitions for theme switching */
+body, .bg-white, .bg-gray-50, .bg-gray-100, .bg-gray-200, .text-gray-500, .text-gray-600, .text-gray-700, .text-gray-800, .text-gray-900 {
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Project card styles */
+.project-card {
+  transition: all 0.2s ease;
+}
+
+.project-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--text-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
+/* Range input styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  height: 8px;
+  border-radius: 4px;
+  background: var(--bg-tertiary);
+  outline: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+}
+
+input[type="range"]::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: var(--primary-color);
+  cursor: pointer;
+}
+
+/* Modal animations */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideIn {
+  from { transform: translateY(-20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+#modal-backdrop {
+  animation: fadeIn 0.2s ease-out;
+}
+
+#add-study-modal > div,
+#add-habit-modal > div,
+#add-journal-modal > div,
+#add-workout-modal > div,
+#add-project-modal > div {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Habit completion animation */
+@keyframes checkmark {
+  0% { transform: scale(0); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
+.habit-check:checked + svg {
+  animation: checkmark 0.3s ease-out;
+}
+
+/* Score bar animations */
+@keyframes growBar {
+  from { width: 0%; }
+  to { width: var(--target-width); }
+}
+
+#total-score-bar,
+#study-score-bar,
+#mindset-score-bar,
+#fitness-score-bar,
+#creative-score-bar,
+#recall-new-bar,
+#recall-learning-bar,
+#recall-review-bar,
+#recall-mastered-bar {
+  animation: growBar 1s ease-out forwards;
+}
+
+/* Mode card active state */
+.mode-card.active {
+  border-color: var(--mindset-color);
+  background-color: rgba(168, 85, 247, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  .grid-cols-5 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  
+  #mastery-chart {
+    height: 200px !important;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-cols-4,
+  .grid-cols-5,
+  .grid-cols-3,
+  .grid-cols-2 {
+    grid-template-columns: repeat(1, minmax(0, 1fr));
+  }
+  
+  #mastery-chart {
+    height: 180px !important;
+  }
+}

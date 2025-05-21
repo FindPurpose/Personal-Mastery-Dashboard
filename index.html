@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Personal Mastery Dashboard</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css">
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@2.0.2/build/global/luxon.min.js"></script>
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 transition-colors duration-200">
+    <div id="app" class="min-h-screen flex flex-col">
+        <!-- Main Dashboard -->
+        <div id="dashboard-screen" class=" flex-grow flex flex-col">
+            <!-- Header -->
+            <header class="bg-white dark:bg-gray-800 shadow-sm">
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="flex justify-between h-16">
+                        <div class="flex items-center">
+                            <h1 class="text-xl font-bold text-gray-900 dark:text-white">Personal Mastery</h1>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <div class="relative">
+                                <button id="mode-selector-btn" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <span id="current-mode">Default Mode</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div id="mode-dropdown" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
+                                    <div class="py-1" role="menu" aria-orientation="vertical">
+                                        <a href="#" class="mode-option block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="default">Default Mode</a>
+                                        <a href="#" class="mode-option block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="grit">Grit Mode</a>
+                                        <a href="#" class="mode-option block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="flow">Flow Mode</a>
+                                        <a href="#" class="mode-option block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="focus">Focus Mode</a>
+                                        <a href="#" class="mode-option block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" data-mode="creative">Creative Mode</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <button id="theme-toggle" class="p-2 rounded-full text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                <svg id="theme-toggle-dark-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"></path>
+                                </svg>
+                                <svg id="theme-toggle-light-icon" class="hidden w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M10 2a1 1 0 011 1v1a1 1 0 11-2 0V3a1 1 0 011-1zm4 8a4 4 0 11-8 0 4 4 0 018 0zm-.464 4.95l.707.707a1 1 0 001.414-1.414l-.707-.707a1 1 0 00-1.414 1.414zm2.12-10.607a1 1 0 010 1.414l-.706.707a1 1 0 11-1.414-1.414l.707-.707a1 1 0 011.414 0zM17 11a1 1 0 100-2h-1a1 1 0 100 2h1zm-7 4a1 1 0 011 1v1a1 1 0 11-2 0v-1a1 1 0 011-1zM5.05 6.464A1 1 0 106.465 5.05l-.708-.707a1 1 0 00-1.414 1.414l.707.707zm1.414 8.486l-.707.707a1 1 0 01-1.414-1.414l.707-.707a1 1 0 011.414 1.414zM4 11a1 1 0 100-2H3a1 1 0 000 2h1z" fill-rule="evenodd" clip-rule="evenodd"></path>
+                                </svg>
+                            </button>
+                            <div class="relative">
+                                <button id="user-menu-button" class="flex items-center px-3 py-2 rounded-md text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">
+                                    <span id="username">User</span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div id="user-dropdown" class="hidden absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white dark:bg-gray-800 ring-1 ring-black ring-opacity-5 z-10">
+                                    <div class="py-1" role="menu" aria-orientation="vertical">
+                                        <a href="#" id="profile-link" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Profile</a>
+                                        <a href="#" id="settings-link" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Settings</a>
+                                        <a href="#" id="logout-link" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700" role="menuitem">Sign out</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            
+            <!-- Main Content -->
+            <main class="flex-grow">
+                <!-- Mastery Score Overview -->
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+                    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6">
+                        <div class="flex flex-col md:flex-row justify-between items-start md:items-center mb-4">
+                            <h2 class="text-xl font-semibold text-gray-900 dark:text-white">Mastery Score</h2>
+                            <div class="flex items-center mt-2 md:mt-0">
+                                <span id="streak-count" class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-yellow-100 text-yellow-800 dark:bg-yellow-800 dark:text-yellow-100">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                                    </svg>
+                                    0 Day Streak
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Total</h3>
+                                <p id="total-score" class="text-3xl font-bold text-gray-900 dark:text-white">0</p>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mt-2">
+                                    <div id="total-score-bar" class="bg-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Study</h3>
+                                <p id="study-score" class="text-3xl font-bold text-indigo-600 dark:text-indigo-400">0</p>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mt-2">
+                                    <div id="study-score-bar" class="bg-indigo-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Mindset</h3>
+                                <p id="mindset-score" class="text-3xl font-bold text-purple-600 dark:text-purple-400">0</p>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mt-2">
+                                    <div id="mindset-score-bar" class="bg-purple-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Fitness</h3>
+                                <p id="fitness-score" class="text-3xl font-bold text-green-600 dark:text-green-400">0</p>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mt-2">
+                                    <div id="fitness-score-bar" class="bg-green-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                            <div class="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 text-center">
+                                <h3 class="text-sm font-medium text-gray-500 dark:text-gray-400 mb-1">Creative</h3>
+                                <p id="creative-score" class="text-3xl font-bold text-pink-600 dark:text-pink-400">0</p>
+                                <div class="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2.5 mt-2">
+                                    <div id="creative-score-bar" class="bg-pink-500 h-2.5 rounded-full" style="width: 0%"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6">
+                            <canvas id="mastery-chart" height="100"></canvas>
+                        </div>
+                    </div>
+                    
+                    <!-- Cross-Module Feedback -->
+                    <div id="feedback-container" class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6 mb-6 hidden">
+                        <h2 class="text-xl font-semibold text-gray-900 dark:text-white mb-4">Today's Insights</h2>
+                        <div id="feedback-list" class="space-y-3">
+                            <!-- Feedback items will be inserted here -->
+                        </div>
+                    </div>
+                    
+                    <!-- Module Nav
+(Content truncated due to size limit. Use line ranges to read in chunks)
